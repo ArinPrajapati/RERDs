@@ -14,3 +14,5 @@ class Storage {
 }
 
 export default Storage;
+
+// add string methods to stroage stringlength and append

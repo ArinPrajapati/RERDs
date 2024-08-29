@@ -1,7 +1,7 @@
 import { createConnection } from "net";
 
 // Connect to the Redis-like server
-const client = createConnection({ port: 6379 }, () => {
+const client = createConnection({ host: " tcp://0.tcp.in.ngrok.io", port: 16751 }, () => {
   console.log("Connected to server!");
 
   // Send SET command
