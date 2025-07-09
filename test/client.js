@@ -5,7 +5,7 @@ const client = createConnection({ host: " tcp://0.tcp.in.ngrok.io", port: 16751 
   console.log("Connected to server!");
 
   // Send SET command
-  client.write("SET key1 value1\n");
+  client.write("SET key1 string value1\n");
 
   // Send GET command
   client.write("GET key1\n");

@@ -1,16 +1,17 @@
 import net from "net";
-import Storage from "./storage/storage.js";
+import Storage from "./storage/storage";
 import {
-  handleGetCommand,
   handleSetCommand,
   handleDelCommand,
-} from "./commands/stroageCommnads.js";
+  handleGet_Value_Command,
+  handleGet_Type_Command,
+} from "./commands/stroageCommnads";
 
 const storage = new Storage();
 const server = net.createServer((socket) => {
   socket.on("data", (data) => {
     const commandline = data.toString().trim();
-    const [command, key, value] = commandline.split(" ");
+    const [command, key, type, value] = commandline.split(" ");
     let response = "";
     switch (command.toUpperCase()) {
       case "SET":
@@ -18,14 +19,21 @@ const server = net.createServer((socket) => {
           response = "ERROR missing key or value";
           break;
         }
-        response = handleSetCommand(storage, key, value);
+        response = handleSetCommand(storage, key, type, value);
         break;
-      case "GET":
+      case "GET_VALUE":
         if (key === undefined) {
           response = "ERROR missing key";
           break;
         }
-        response = handleGetCommand(storage, key);
+        response = handleGet_Value_Command(storage, key).toString();
+        break;
+      case "GET_TYPE":
+        if (key === undefined) {
+          response = "ERROR missing key";
+          break;
+        }
+        response = handleGet_Type_Command(storage, key);
         break;
       case "DEL":
         if (key === undefined) {
@@ -44,7 +52,7 @@ const server = net.createServer((socket) => {
 });
 
 server.listen(6379, () => {
-  console.log(`Server listening on port 6379 \n command get/set/del example: GET key \n command set example: SET key value 
+  console.log(`Server listening on port 6379 \n command get/set/del example: GET_VALUE key \n command set example: SET key type value 
 
      `);
 });
